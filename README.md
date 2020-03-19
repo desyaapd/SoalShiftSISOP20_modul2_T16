@@ -103,15 +103,16 @@ hour = 0;
 
 if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0));
 if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0));
-if(hour = atoi(argv[3]) > 24 || atoi(argv[3]) < 0));
+if(hour = atoi(argv[3]) > 23 || atoi(argv[3]) < 0));
 ```
 Program ini memiliki argumen `sec` detik, `min` menit, dan `hour`jam, sehingga argumen awal ketiga variable tersebut = 0
 
-- `if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0));`
+- `if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0)); if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0)); if(hour = atoi(argv[3]) > 23 || atoi(argv[3]) < 0));` merupakan pengecheckan apakah argumen valid, dilakukan untuk tiap argumen detik,menit dan Jam. Tiap satuan waktu terletak di urutan argumen yang berbeda sehingga sehingga arraynya berbeda.
 
-- `if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0));`
+- untuk batasan detik dan menit yaitu `atoi(argv[1]) > 59` dikarenakan 1 menit atau 1 detik batasnya sampai 60, lalu untuk jam memiliki batasan hingga `atoi(argv[3]) > 23` karena jam paling lama yaitu 24 jam
 
-- `if(hour = atoi(argv[3]) > 24 || atoi(argv[3]) < 0));`
+- penggunaan `atoi` berfungsi untuk mengonversi nilai string menjadi bilangan bertipe integer
+
 
 ```bash
 while(1){
@@ -129,22 +130,20 @@ ptm = localtime(&t);
 ```bash
 if((hour == ptm->tm_hour || hour == 0) && (min == ptm->tm_min || min == 0) && (sec == ptm->tm_sec || sec == 0)) {
 if (fork()==0)
-char *argx[] = {"bash",argv[5], NULL};
+char *argx[] = {"bash",argv[4], NULL};
 execv("/bin/bash", argx);
 	}
 }
 sleep(5);
 }
 ```
-- `if((hour == ptm->tm_hour || hour == 0)`
+- `if((hour == ptm->tm_hour || hour == 0) && (min == ptm->tm_min || min == 0) && (sec == ptm->tm_sec || sec == 0))` merupakan argumen untuk menyamakan jam yang ingin diinput oleh user dengan jam pada saat program itu dijalankan, jadi Daemon akan berjalan sesuai dengan argumen yang telah diinputkan.
 
-- `(min == ptm->tm_min || min == 0)`
+- Jika kondisi tersebut telah terpenuhi, maka program akan menjalankan fungis _loop_ fork untuk melakukan bash pada script yang telah dibuat pada file `test.sh`
 
-- `(sec == ptm->tm_sec || sec == 0))`
+- Fungsi `while(1)` akan memberhentikan program sejenak dengan`sleep(5);` selama 5 detik sebelum melakukan proses looping lagi.
 
--
 
-Fungsi `while(1)` akan memberhentikan program sejenak dengan`sleep(5);` selama 5 detik sebelum melakukan proses looping lagi.
 
 
 __Cara menjalankan program__
