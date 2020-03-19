@@ -38,7 +38,7 @@ close(STDIN_FILENO);
 close(STDOUT_FILENO);
 close(STDERR_FILENO);
 
-if(argcv != 5){
+if(argc != 5){
 	printf("failed");
 return 0;
 }
@@ -47,9 +47,9 @@ sec = 0;
 min = 0;
 hour = 0;
 
-if(min = atoi(argv[2]) > 59 || atoi(argv[1]) < 0));
-if(sec = atoi(argv[1]) > 59|| atoi(argv[2]) < 0));
-if(hour = atoi(argv[3]) > 24 || atoi(argv[1]) < 0));
+if(sec = atoi(argv[1]) > 59|| atoi(argv[1]) < 0));
+if(min = atoi(argv[2]) > 59 || atoi(argv[2]) < 0));
+if(hour = atoi(argv[3]) > 24 || atoi(argv[3]) < 0));
 
 while(1){
 time_t t;
