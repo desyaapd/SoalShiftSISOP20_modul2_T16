@@ -60,7 +60,7 @@ ptm = localtime(&t);
 
 if((hour == ptm->tm_hour || hour == 0) && (min == ptm->tm_min || min == 0) && (sec == ptm->tm_sec || sec == 0)) {
 if (fork()==0)
-char *argx[] = {"bash",argv[5], NULL};
+char *argx[] = {"bash",argv[4], NULL};
 execv("/bin/bash", argx);
 	}
 }
