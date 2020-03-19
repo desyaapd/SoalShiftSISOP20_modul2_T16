@@ -49,7 +49,7 @@ hour = 0;
 
 if(sec = atoi(argv[1]) > 59|| atoi(argv[1]) < 0));
 if(min = atoi(argv[2]) > 59 || atoi(argv[2]) < 0));
-if(hour = atoi(argv[3]) > 24 || atoi(argv[3]) < 0));
+if(hour = atoi(argv[3]) > 23 || atoi(argv[3]) < 0));
 
 while(1){
 time_t t;
