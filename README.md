@@ -156,5 +156,5 @@ __Cara menjalankan program__
 - Kemudian, cek apakah program berjalan dengan cara `ps aux | grep test.sh`
 
 Hasil output dari program ini yaitu seperti berikut: 
-![screenshot soal 1]()
+![SOAL1C](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/image/SOAL1C.PNG)
 
