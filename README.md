@@ -2,7 +2,7 @@
 - I Gede Arimbawa Teja Putra Wardana  || 05311840000045
 - Desya Ananda Psupita Dewi           || 05311840000046
 
-### Soal 1
+# Soal 1
 Buatlah program C yang menyerupai crontab untuk menjalankan script bash dengan ketentuan sebagai berikut:
 
 a. Program menerima 4 argumen berupa:
@@ -28,13 +28,13 @@ Contoh: `./program \* 34 7 /home/somi/test.sh`
 
 Program dengan argumen seperti contoh di atas akan menjalankan script test.sh setiap detik pada jam 07:34.
 
-##### soal 1.c
+### Soal 1.c
 
-___Code : https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/1.c___
+___Source code : [Soal 1.c](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/1.c)___
 
 Soal 1 merupakan program untuk membuat sebuah program deamon dengan ketentuan seperti diatas. Program yang telah kami buat sebagai berikut:
 
-**Penyelesaian: **
+**Penyelesaian:**
 
 ```bash
 #include <unistd.h>
@@ -105,6 +105,13 @@ if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0));
 if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0));
 if(hour = atoi(argv[3]) > 24 || atoi(argv[3]) < 0));
 ```
+Program ini memiliki argumen `sec` detik, `min` menit, dan `hour`jam, sehingga argumen awal ketiga variable tersebut = 0
+
+- `if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0));`
+
+- `if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0));`
+
+- `if(hour = atoi(argv[3]) > 24 || atoi(argv[3]) < 0));`
 
 ```bash
 while(1){
@@ -114,6 +121,9 @@ struct tm* ptm;
 t = time(NULL);
 ptm = localtime(&t);
 ```
+- fungsi `while(1)` merupakan fungsi *looping* utama dari program Daemon karena program akan bekerja dalam jangka waktu tertentu.
+
+- `time_t t;` merupakan penyimpanan waktu saat ini di dalam variabel `t`, kemudian `ptm = localtime(&t);` akan mengkonversikan nilai pada variable`t` menjadi waktu saat ini.
 
 
 ```bash
@@ -126,3 +136,25 @@ execv("/bin/bash", argx);
 sleep(5);
 }
 ```
+- `if((hour == ptm->tm_hour || hour == 0)`
+
+- `(min == ptm->tm_min || min == 0)`
+
+- `(sec == ptm->tm_sec || sec == 0))`
+
+-
+
+Fungsi `while(1)` akan memberhentikan program sejenak dengan`sleep(5);` selama 5 detik sebelum melakukan proses looping lagi.
+
+
+__Cara menjalankan program__
+
+- Pertama, program harus dicompile terlebih dahulu dengan `gcc 1.c –o 1`
+
+- Setelah itu kita dapat memastikan apakah berjalan dengan perintah `./1 \* m h /home/desyaa/test.sh` , jadi menit dan jam disini dapat dirandom sesuai dengan input user
+
+- Kemudian, cek apakah program berjalan dengan cara `ps aux | grep test.sh`
+
+Hasil output dari program ini yaitu seperti berikut: 
+![screenshot soal 1]()
+
