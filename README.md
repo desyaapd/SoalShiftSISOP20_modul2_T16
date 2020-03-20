@@ -30,20 +30,24 @@ Program dengan argumen seperti contoh di atas akan menjalankan script test.sh se
 
 ### Soal 1.c
 
-___Source code : [Soal 1.c](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/1.c)___
+___Source code : [Soal 1.c](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/soal1FIX.c)___
 
 Soal 1 merupakan program untuk membuat sebuah program deamon dengan ketentuan seperti diatas. Program yang telah kami buat sebagai berikut:
 
 **Penyelesaian:**
 
 ```bash
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <time.h>
-#include <stdio.h>
+#include <errno.h>
 #include <syslog.h>
 #include <fcntl.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <ctype.h>
 
 int main(int argc, char** argv) {
 pid_t pid, sid;    // Variabel untuk menyimpan PID
@@ -75,10 +79,6 @@ exit(EXIT_FAILURE);
 if ((chdir("/home/desyaa")) < 0) {
 exit(EXIT_FAILURE);
 }
-
-close(STDIN_FILENO);
-close(STDOUT_FILENO);
-close(STDERR_FILENO);
 ```
 - pada fungsi `sid = setsid()`, proses akan mendapatkan sebuah **session ID** yang baru
 
@@ -89,7 +89,7 @@ Untuk tujuan pengamanan dan mencegah terjadinya intervensi dari user, maka kita 
 
 ```bash
 if(argc != 5){
-	printf("failed");
+	printf("failed to run");
 return 0;
 }
 ```
@@ -101,13 +101,49 @@ sec = 0;
 min = 0;
 hour = 0;
 
-if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0));
-if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0));
-if(hour = atoi(argv[3]) > 23 || atoi(argv[3]) < 0));
+   //argumen detik
+   if(argv[1][0] == '*') {
+       sec = 0;
+   } else if(isalpha(argv[1][0])) {
+       printf("input harus angka di argumen 1");
+   } else if(atoi(argv[1]) < 0 || atoi(argv[1]) > 59) {
+       printf("rangenya harus 0-59 detik atau *");
+   } else {
+       sec = atoi(argv[1]);
+   }
+
+   //argumen menit
+   if(argv[2][0] == '*') {
+       min = 0;
+   } else if(isalpha(argv[2])) {
+       printf("input harus angka di argumen 2");
+   } else if(atoi(argv[2]) < 0 || atoi(argv[2]) > 59) {
+       printf("rangenya harus 0-59 menit atau *");
+   } else {
+       min = atoi(argv[2]);
+   }
+
+   //argumen jam
+   if(argv[3][0] == '*') {
+       hour = 0;
+   } else if(isalpha(argv[3])) {
+       printf("input harus angka di argumen 3");
+   } else if(atoi(argv[3]) < 0 || atoi(argv[3]) > 23) {
+       printf("rangenya harus 0-23 jam atau *");
+   } else {
+       hour = atoi(argv[3]);
+   }
+
 ```
 Program ini memiliki argumen `sec` detik, `min` menit, dan `hour`jam, sehingga argumen awal ketiga variable tersebut = 0
 
-- `if(sec = atoi(argv[1]) > 59 || atoi(argv[1]) < 0)); if(min = atoi(argv[2]) > 59|| atoi(argv[2]) < 0)); if(hour = atoi(argv[3]) > 23 || atoi(argv[3]) < 0));` merupakan pengecheckan apakah argumen valid, dilakukan untuk tiap argumen detik,menit dan Jam. Tiap satuan waktu terletak di urutan argumen yang berbeda sehingga sehingga arraynya berbeda.
+```
+if(argv[1][0] == '*') {
+       sec = 0;
+   } else if(isalpha(argv[1][0])) {
+       printf("input harus angka di argumen 1");
+```       
+- perintah diatas digunakan untuk melakukan pengecekan terhadap argumen masing masing dtik menit dan jam. argumen yang diinputkan disini dapat berupa value (bentuk angka) atau * untuk dideklarasi sebagai variable dari detik, menit atau jam.
 
 - untuk batasan detik dan menit yaitu `atoi(argv[1]) > 59` dikarenakan 1 menit atau 1 detik batasnya sampai 60, lalu untuk jam memiliki batasan hingga `atoi(argv[3]) > 23` karena jam paling lama yaitu 24 jam
 
@@ -115,12 +151,11 @@ Program ini memiliki argumen `sec` detik, `min` menit, dan `hour`jam, sehingga a
 
 
 ```bash
-while(1){
-time_t t;
-struct tm* ptm;
+  while(1){
+    time_t t;
+    struct tm tm = *localtime(&t);
 
-t = time(NULL);
-ptm = localtime(&t);
+    t = time(NULL);
 ```
 - fungsi `while(1)` merupakan fungsi *looping* utama dari program Daemon karena program akan bekerja dalam jangka waktu tertentu.
 
@@ -128,16 +163,18 @@ ptm = localtime(&t);
 
 
 ```bash
-if((hour == ptm->tm_hour || hour == 0) && (min == ptm->tm_min || min == 0) && (sec == ptm->tm_sec || sec == 0)) {
-if (fork()==0)
-char *argx[] = {"bash",argv[4], NULL};
-execv("/bin/bash", argx);
-	}
-}
-sleep(5);
+
+if((hour == tm.tm_hour || hour == 0) && (min == tm.tm_min || min == 0) && (sec == tm.tm_sec || sec == 0)) {
+	if (fork()==0)
+	  char *argx[] = {"bash",argv[4], NULL};
+	  execv("/bin/bash", argx);
+	  }
+      }
+    sleep(5);
+  }
 }
 ```
-- `if((hour == ptm->tm_hour || hour == 0) && (min == ptm->tm_min || min == 0) && (sec == ptm->tm_sec || sec == 0))` merupakan argumen untuk menyamakan jam yang ingin diinput oleh user dengan jam pada saat program itu dijalankan, jadi Daemon akan berjalan sesuai dengan argumen yang telah diinputkan.
+- `if((hour == tm.tm_hour || hour == 0) && (min == tm.tm_min || min == 0) && (sec == tm.tm_sec || sec == 0))` merupakan argumen untuk menyamakan jam yang ingin diinput oleh user dengan jam pada saat program itu dijalankan, jadi Daemon akan berjalan sesuai dengan argumen yang telah diinputkan.
 
 - Jika kondisi tersebut telah terpenuhi, maka program akan menjalankan fungis _loop_ fork untuk melakukan bash pada script yang telah dibuat pada file `test.sh`
 
@@ -148,12 +185,18 @@ sleep(5);
 
 __Cara menjalankan program__
 
-- Pertama, program harus dicompile terlebih dahulu dengan `gcc 1.c –o 1`
+- Buatlah file sh untuk membuat file bash yang kelak akan berisi cron, saya memberi namanya dengan `test.sh`
+
+- Kemudian file `test.sh` tersebut akan di bash untuk menghasilkan atau menunjukkan apakah file bash di dalamnya dapat berjalan, seperti pada gambar berikut
+
+![bash](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/image/bash.png)
+
+- Setelah semuanya berjalan, maka program deamon harus dicompile terlebih dahulu dengan `gcc 1.c –o 1`
 
 - Setelah itu kita dapat memastikan apakah berjalan dengan perintah `./1 \* m h /home/desyaa/test.sh` , jadi menit dan jam disini dapat dirandom sesuai dengan input user
 
-- Kemudian, cek apakah program berjalan dengan cara `ps aux | grep test.sh`
+- Kemudian, cek apakah program berjalan dengan melihat isi dari `file.txt`
 
 Hasil output dari program ini yaitu seperti berikut: 
-![SOAL1C](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/image/SOAL1C.PNG)
+![Capture](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/image/Capture.PNG)
 
