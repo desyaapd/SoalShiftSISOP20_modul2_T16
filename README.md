@@ -200,3 +200,13 @@ __Cara menjalankan program__
 Hasil output dari program ini yaitu seperti berikut: 
 ![Capture](https://github.com/desyaapd/SoalShiftSISOP20_modul2_T16/blob/master/image/Capture.PNG)
 
+
+
+
+### Kendala yang dialami
+
+- Masih belum terlalu memahami soal dikarenakan terlalu banyak syarat atau ketentuan dalam mengerjakan soalnya
+
+- Saat akan menjalankan programnya selalu terdapat banyak error ataupun warning yang kadang kami sendiri tidak bisa menyelesaikan dan membutuhkan waktu lama untuk menghilangkannya
+
+- Serta dalam pengerjaan kurangnya komunikasi antar praktikan satu tim dikarenakan pengerjaannya yang bersifat online
